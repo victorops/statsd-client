@@ -53,13 +53,13 @@ private[statsd] trait RealStatsdClientCake extends StatsdClientCake {
   private val HostnameProperty = "statsd.host"
 
   // The property name for the application stat prefix.
-  private val StatPrefixProperty = "statsd.stat.prefix"
+  private val StatPrefixProperty = "statsd.prefix"
 
   // Use scala's Random util for nextFloat.
   private lazy val random = new Random
 
   // The stat prefix used by the client.
-  override val statPrefix = {
+  override lazy val statPrefix = {
     Try(config.getString(StatPrefixProperty)) getOrElse {
       logger.warn("No stat prefix configured, using default of statsd")
       "statsd"
