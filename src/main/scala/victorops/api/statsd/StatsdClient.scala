@@ -4,6 +4,7 @@ import org.slf4j.LoggerFactory
 import org.slf4j.Logger
 import com.typesafe.config.Config
 import com.typesafe.config.ConfigFactory
+import scala.util.control.NonFatal
 
 /**
  * Trait defining the statsd interface. It defines the two stats calls in
@@ -121,7 +122,7 @@ trait StatsdClient {
     try {
       operation
     } catch {
-      case error => logger.warn("Unhandled throwable sending stat.", error)
+      case NonFatal(error) => logger.warn("Unhandled throwable sending stat.", error)
     }
   }
 }
