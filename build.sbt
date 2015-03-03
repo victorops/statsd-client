@@ -12,6 +12,8 @@ version := "1.1.0"
 
 scalaVersion := "2.11.5"
 
+scalacOptions += "-target:jvm-1.7"
+
 resolvers ++= Seq(
     DefaultMavenRepository,
     Resolver.url("Play", url("http://download.playframework.org/ivy-releases/"))(Resolver.ivyStylePatterns),
