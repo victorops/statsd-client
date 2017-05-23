@@ -28,7 +28,7 @@ libraryDependencies ++= Seq(
   "com.typesafe" %  "config"      % "1.0.2",
   "org.slf4j"    %  "slf4j-api"   % "1.7.2",
   "junit"        %  "junit"       % "4.11"    % "test",
-  "org.specs2"   % "specs2_2.10"  % "2.3.12"     % "test"
+  "org.specs2"   % "specs2_2.11"  % "2.3.12"     % "test"
 )
 
 bintrayOrganization := Some("victorops")
