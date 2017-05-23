@@ -85,6 +85,17 @@ trait StatsdClient {
     safely { maybeSend(statFor(key, value, GaugeSuffix, 1.0), 1.0) }
   }
 
+  /**
+    * Record the given value.
+    *
+    * @param key The stat key to update.
+    * @param value The value to record for the stat.
+    */
+  def gaugeRelative(key: String, value: Long) {
+    safely { maybeSend(statFor(key, value, GaugeSuffix, 1.0, relative=true), 1.0) }
+  }
+
+
   /*
    * ****************************************************************
    *                PRIVATE IMPLEMENTATION DETAILS
@@ -97,10 +108,12 @@ trait StatsdClient {
    * For timing, it provides something like {@code key:millis|ms}.
    * If sampling rate is less than 1, it provides something like {@code key:value|type|@rate}
    */
-  private def statFor(key: String, value: Long, suffix: String, samplingRate: Double): String = {
+  private def statFor(key: String, value: Long, suffix: String, samplingRate: Double, relative: Boolean = false): String = {
+    val valuePrefix = if (relative && value >= 0) "+" else "" // negative values always get the minus sign from %s
+
     samplingRate match {
-      case x if x >= 1.0 => "%s.%s:%s|%s".format(statPrefix, key, value, suffix)
-      case _ => "%s.%s:%s|%s|@%f".format(statPrefix, key, value, suffix, samplingRate)
+      case x if x >= 1.0 => "%s.%s:%s%s|%s".format(statPrefix, key, valuePrefix, value, suffix)
+      case _ => "%s.%s:%s%s|%s|@%f".format(statPrefix, key, valuePrefix, value, suffix, samplingRate)
     }
   }
 

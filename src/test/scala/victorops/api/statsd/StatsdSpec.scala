@@ -13,6 +13,14 @@ case class StatsdSpec() extends Specification {
       Statsd.gauge("test", 42)
       receive() mustEqual "statsd.test:42|g"
     }
+    "send gauge increment value" in new Setup {
+      Statsd.gaugeRelative("test", 42)
+      receive() mustEqual "statsd.test:+42|g"
+    }
+    "send gauge decrement value" in new Setup {
+      Statsd.gaugeRelative("test", -42)
+      receive() mustEqual "statsd.test:-42|g"
+    }
     "send increment by one message" in new Setup {
       Statsd.increment("test")
       receive() mustEqual "statsd.test:1|c"
